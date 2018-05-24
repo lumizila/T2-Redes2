@@ -70,7 +70,7 @@ def main():
         tabelaServidores[str(address[0])] =  datetime.datetime.now().time()
         print(tabelaServidores.items())
       elif(data[:2] == 'SC') :
-        if(socket.gethostbyname(socket.gethostname() == list(tabelaServidores.items())[0]):
+        if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0]):
           print('sending acknowledgement to', address)
           sock.sendto('ack', address)
         else:
