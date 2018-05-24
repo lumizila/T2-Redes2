@@ -2,7 +2,6 @@ import socket
 import struct
 import sys
 
-message = 'very important data'
 multicast_group = ('224.3.29.71', 10000)
 
 # Create the datagram socket
@@ -17,23 +16,28 @@ sock.settimeout(0.2)
 ttl = struct.pack('b', 1)
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 
-try:
+message = '1';
+while(message != "quit"):
+	print("Welcome to the calculator Client! Type 'quit' to quit the program.")
+	print("To make a calculation, type a reverse polish math expression,\nfor example 5+3 becomes 5 3 +")
+	message = input("Please write your expression(or quit): ")
+	if(message != "quit"):
+		try:
+			# Send data to the multicast group
+			print ('sending: ', message)
+			sent = sock.sendto(message, multicast_group)
 
-    # Send data to the multicast group
-    print >>sys.stderr, 'sending "%s"' % message
-    sent = sock.sendto(message, multicast_group)
-
-    # Look for responses from all recipients
-    while True:
-        print >>sys.stderr, 'waiting to receive'
-        try:
-            data, server = sock.recvfrom(16)
-        except socket.timeout:
-            print >>sys.stderr, 'timed out, no more responses'
-            break
-        else:
-            print >>sys.stderr, 'received "%s" from %s' % (data, server)
-
-finally:
-    print >>sys.stderr, 'closing socket'
-    sock.close()
+			# Look for responses from all recipients
+			while True:
+				print ('waiting to receive')
+				try:
+					data, server = sock.recvfrom(16)
+				except socket.timeout:
+					print ('timed out, no more responses')
+					break
+				else:
+					print ('received ', data ,' from ', server)
+		except:
+			pass
+print ('closing socket')
+sock.close()
