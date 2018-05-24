@@ -3,7 +3,8 @@ import socket
 import struct
 import sys
 import threading
-from time import sleep 
+from time import sleep
+import datetime
 
 def send_hearbeat():
 
@@ -58,11 +59,13 @@ def main():
       print('waiting to receive message')
       data, address = sock.recvfrom(1024)
       
-      print('received %s bytes from %s' % (len(data), address))
-      print(data)
-
-      print('sending acknowledgement to', address)
-      sock.sendto('ack', address)
+      print('received' + str(len(data)) + 'bytes from' + str(address))
+      print('Message:' + str(data))
+      if(data[:2] == 'SM'):
+        print("Updating Heartbeat table from: " + str(address[0]) + " at " + str(datetime.datetime.now().time()) )
+      elif(data[:2] == 'SC') :
+        print('sending acknowledgement to', address)
+        sock.sendto('ack', address)
 
   hb.join()
   print ('closing socket')
