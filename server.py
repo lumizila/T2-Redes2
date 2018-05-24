@@ -39,8 +39,6 @@ def send_hearbeat():
 def main():
   #iniciando tabela de servidores
   tabelaServidores = OrderedDict({socket.gethostbyname(socket.gethostname()): datetime.datetime.now().time()})
-  print(tabelaServidores)
-
   hb = threading.Thread(target=send_hearbeat)
   hb.start()
   #### SERVER ####
@@ -66,9 +64,16 @@ def main():
       print('received' + str(len(data)) + 'bytes from' + str(address))
       print('Message:' + str(data))
       if(data[:2] == 'SM'):
-        print("Updating Heartbeat table from: " + str(address[0]) + " at " + str(datetime.datetime.now().time()) )
-        tabelaServidores[str(address[0])] =  datetime.datetime.now().time()
-        print(tabelaServidores.items())
+		if(str(address[0]) in tabelaServidores):
+		  print("Updating Heartbeat table from: " + str(address[0]) + " at " + str(datetime.datetime.now().time()) )
+          tabelaServidores.update({str(adress[0]) : datetime.datetime.now().time()})
+          print(tabelaServidores.items())
+        else:
+		  print("Adding new server to table: ", adress[0]);
+		  tabelaServidores.update({str(adress[0]) : datetime.datetime.now().time()})
+		  tabelaServidores = OrderedDict(sorted(tabelaServidores.items(), key=lambda x: x[0]))
+		  print(tabelaServidores.items())
+
       elif(data[:2] == 'SC') :
         if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0]):
           print('sending acknowledgement to', address)
