@@ -69,7 +69,7 @@ def main():
           tabelaServidores.update({str(address[0]) : datetime.datetime.now().time()})
           print(tabelaServidores.items())
         else:
-          print("Adding new server to table: ", adress[0]);
+          print("Adding new server to table: ", address[0]);
           tabelaServidores.update({str(address[0]) : datetime.datetime.now().time()})
           tabelaServidores = OrderedDict(sorted(tabelaServidores.items(), key=lambda x: x[0]))
           print(tabelaServidores.items())
