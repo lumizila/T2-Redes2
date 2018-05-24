@@ -3,14 +3,9 @@ import socket
 import struct
 import sys
 import threading
-<<<<<<< HEAD
 from time import sleep
 import datetime
-=======
-from time import sleep 
-import datetime
-
->>>>>>> 69f460d0ec2fd634e3c33aaad0a06a17317f32e3
+from collections import OrderedDict
 
 def send_hearbeat():
 
@@ -43,7 +38,7 @@ def send_hearbeat():
 
 def main():
   #iniciando tabela de servidores
-  tabelaServidores = {socket.gethostbyname(socket.gethostname()): datetime.datetime.now().time()}
+  tabelaServidores = OrderedDict({socket.gethostbyname(socket.gethostname()): datetime.datetime.now().time()})
   print(tabelaServidores)
 
   hb = threading.Thread(target=send_hearbeat)
@@ -72,9 +67,16 @@ def main():
       print('Message:' + str(data))
       if(data[:2] == 'SM'):
         print("Updating Heartbeat table from: " + str(address[0]) + " at " + str(datetime.datetime.now().time()) )
+        tabelaServidores[str(address[0])] =  datetime.datetime.now().time()
+        print(tabelaServidores.items())
       elif(data[:2] == 'SC') :
-        print('sending acknowledgement to', address)
-        sock.sendto('ack', address)
+        if(socket.gethostbyname(socket.gethostname() == list(tabelaServidores.items())[0]):
+          print('sending acknowledgement to', address)
+          sock.sendto('ack', address)
+        else:
+          print("I am not the chosen one")
+          
+
 
   hb.join()
   print ('closing socket')
