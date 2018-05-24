@@ -4,6 +4,8 @@ import struct
 import sys
 import threading
 from time import sleep 
+import datetime
+
 
 def send_hearbeat():
 
@@ -35,6 +37,10 @@ def send_hearbeat():
 
 
 def main():
+  #iniciando tabela de servidores
+  tabelaServidores = {socket.gethostbyname(socket.gethostname()): datetime.datetime.now().time()}
+  print(tabelaServidores)
+
   hb = threading.Thread(target=send_hearbeat)
   hb.start()
   #### SERVER ####
@@ -43,7 +49,6 @@ def main():
 
   # Create the socket
   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
   # Bind to the server address
   sock.bind(server_address)
 
