@@ -25,6 +25,7 @@ while(message != "quit"):
 		try:
 			# Send data to the multicast group
 			print ('sending: ', message)
+			message = "CM" + message
 			sent = sock.sendto(message, multicast_group)
 
 			# Look for responses from all recipients
