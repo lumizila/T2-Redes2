@@ -68,7 +68,7 @@ def main():
 		  print("Updating Heartbeat table from: " + str(address[0]) + " at " + str(datetime.datetime.now().time()) )
           tabelaServidores.update({str(adress[0]) : datetime.datetime.now().time()})
           print(tabelaServidores.items())
-        else:
+    else:
 		  print("Adding new server to table: ", adress[0]);
 		  tabelaServidores.update({str(adress[0]) : datetime.datetime.now().time()})
 		  tabelaServidores = OrderedDict(sorted(tabelaServidores.items(), key=lambda x: x[0]))
