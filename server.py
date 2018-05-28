@@ -22,7 +22,11 @@ def eval(expression):
   for token in tokens:
     if token in ops:
       arg2 = stack.pop()
-      arg1 = stack.pop()
+      try:
+          arg1 = stack.pop()
+      except Exception as e:
+          return "ERROR: should be RPN"
+
       result = ops[token](arg1, arg2)
       stack.append(result)
     else:
