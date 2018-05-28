@@ -29,16 +29,22 @@ def send_hearbeat(sockhp):
 
 def election(tabelaServidores):
     timenow = datetime.now().time()
+    keys = []
     for key in tabelaServidores:
         timedelta = datetime.combine(
             date.today(), timenow) - datetime.combine(date.today(), tabelaServidores[key])
         print(key + " last update was: " +
               str(timedelta.seconds) + " seconds ago")
         if(timedelta.total_seconds() > 40):
-            print("Removing " + key + " from table")
-            del tabelaServidores[key]
+            keys.append(key)
         else:
             print(key + " still able to run")
+    #This for is necessary cause, when you delete during a interaction  causes:
+    #RuntimeError: OrderedDict mutated during iteration
+    for key in keys:
+        print("Removing " + key + " from table")
+        del tabelaServidores[key]
+
     return tabelaServidores
 
 def update_heartbeat(address, tabelaServidores):
