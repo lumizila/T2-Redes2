@@ -98,11 +98,9 @@ def main():
             update_heartbeat(address[0], tabelaServidores)
 
         elif(data[:2].decode('utf-8') == 'CM'):
-            # print(socket.gethostbyname()[0])
-            print(list(tabelaServidores.items())[0][0])
-            print(socket.gethostname())
-            print(socket.gethostbyname(socket.gethostname()))
-            print(list(tabelaServidores.items())[0][0])
+            print(tabelaServidores.items())
+            print(tabelaServidores.keys())
+            print(tabelaServidores.keys()[0])
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print('sending acknowledgement to', address)
                 sock.sendto('ack'.encode(), address)
