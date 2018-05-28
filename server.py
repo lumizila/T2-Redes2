@@ -11,7 +11,8 @@ ops = {
   "+": (lambda a, b: a + b),
   "-": (lambda a, b: a - b),
   "*": (lambda a, b: a * b),
-  "/": (lambda a, b: a / b)
+  "/": (lambda a, b: a / b),
+  "^": (lambda a, b: a ** b)
 }
 
 def eval(expression):
@@ -126,9 +127,8 @@ def main():
                 print("Expression: " + str(data[2:].decode('utf-8')))
                 result = eval(data[2:].decode('utf-8'))
                 print("Result: " + str(result))
-                print('sending acknowledgement to', address)
+                print('Sending Result to ', address)
                 sock.sendto(str(result).encode(), address)
-                sys.exit()
             else:
                 print("I am not the chosen one")
 
