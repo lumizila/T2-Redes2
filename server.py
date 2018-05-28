@@ -98,6 +98,8 @@ def main():
             update_heartbeat(address[0], tabelaServidores)
 
         elif(data[:2].decode('utf-8') == 'CM'):
+            print(tabelaServidores.items())
+            print(tabelaServidores)
             print(list(tabelaServidores.items())[0])
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print('sending acknowledgement to', address)
