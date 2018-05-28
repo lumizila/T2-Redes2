@@ -127,7 +127,7 @@ def main():
                 result = eval(data[2:].decode('utf-8'))
                 print("Result: " + str(result))
                 print('sending acknowledgement to', address)
-                sock.sendto(str(eval(data[-2:].decode('utf-8'))).encode(), address)
+                sock.sendto(str(result).encode(), address)
                 sys.exit()
             else:
                 print("I am not the chosen one")
