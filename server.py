@@ -68,7 +68,7 @@ def election(tabelaServidores):
 
     return tabelaServidores
 
-def update_heartbeat(address, tabelaServidores,counter):
+def update_heartbeat(address, tabelaServidores):
     if(str(address) in tabelaServidores):
         print("Updating Heartbeat table from: " +
               str(address) + " at " + str(datetime.now().time()))
@@ -78,9 +78,8 @@ def update_heartbeat(address, tabelaServidores,counter):
         tabelaServidores.update({str(address): datetime.now().time()})
         tabelaServidores = OrderedDict(
             sorted(tabelaServidores.items(), key=lambda x: x[0]))
-    if(counter == 0):
-        print("Calling election")
-        tabelaServidores = election(tabelaServidores)
+    print("Calling election")
+    tabelaServidores = election(tabelaServidores)
     return tabelaServidores
 
 def main():
@@ -114,7 +113,6 @@ def main():
     group = socket.inet_aton(multicast_group)
     mreq = struct.pack('4sL', group, socket.INADDR_ANY)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
-    counter = 0
     # Receive/respond loop
     while True:
         print('waiting to receive message')
@@ -122,8 +120,7 @@ def main():
         print('Received message: ' + data.decode('utf-8'))
         #print('received ' + str(len(data)) + ' bytes from ' + str(address))
         if(data[:2].decode('utf-8') == 'SM'):
-            tabelaServidores = update_heartbeat(address[0], tabelaServidores, counter)
-            counter = (counter + 1)% (len(tabelaServidores)*4)
+            tabelaServidores = update_heartbeat(address[0], tabelaServidores)
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print(data[-2:].decode('utf-8'))
