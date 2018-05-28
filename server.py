@@ -124,7 +124,7 @@ def main():
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print("Expression: " + str(data[2:].decode('utf-8')))
-                result = eval(data[-2:].decode('utf-8')))
+                result = eval(data[-2:].decode('utf-8'))
                 print("Result: " + str(eval(data[-2:].decode('utf-8'))))
                 print('sending acknowledgement to', address)
                 sock.sendto(str(eval(data[-2:].decode('utf-8'))).encode(), address)
