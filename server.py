@@ -29,7 +29,7 @@ def eval(expression):
         try:
             stack.append(int(token))
         except:
-            return "ERROR should be int"
+            return "ERROR: should be integer"
 
 
   return stack.pop()
