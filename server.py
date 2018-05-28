@@ -11,8 +11,7 @@ ops = {
   "+": (lambda a, b: a + b),
   "-": (lambda a, b: a - b),
   "*": (lambda a, b: a * b),
-  "/": (lambda a, b: a / b),
-  "^": (lambda a, b: a ** b)
+  "/": (lambda a, b: a / b)
 }
 
 def eval(expression):
@@ -57,7 +56,7 @@ def send_hearbeat(sockhp):
         sleep(10)
 
 
-def election(tabelaServidores):
+def is_active(tabelaServidores):
     timenow = datetime.now().time()
     keys = []
     for key in tabelaServidores:
@@ -88,7 +87,7 @@ def update_heartbeat(address, tabelaServidores):
         tabelaServidores = OrderedDict(
             sorted(tabelaServidores.items(), key=lambda x: x[0]))
     print("Calling election")
-    tabelaServidores = election(tabelaServidores)
+    tabelaServidores = is_active(tabelaServidores)
     return tabelaServidores
 
 def main():
