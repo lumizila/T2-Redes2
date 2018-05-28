@@ -39,7 +39,7 @@ def election(tabelaServidores):
             del tabelaServidores[key]
         else:
             print(key + " still able to run")
-
+    return tabelaServidores
 
 def update_heartbeat(address, tabelaServidores):
     if(str(address) in tabelaServidores):
@@ -53,8 +53,8 @@ def update_heartbeat(address, tabelaServidores):
             sorted(tabelaServidores.items(), key=lambda x: x[0]))
 
     print("Calling election")
-    election(tabelaServidores)
-
+    tabelaServidores = election(tabelaServidores)
+    return tabelaServidores
 
 def main():
 
@@ -95,7 +95,7 @@ def main():
         print('Received message: ' + data.decode('utf-8'))
         #print('received ' + str(len(data)) + ' bytes from ' + str(address))
         if(data[:2].decode('utf-8') == 'SM'):
-            update_heartbeat(address[0], tabelaServidores)
+            tabelaServidores = update_heartbeat(address[0], tabelaServidores)
 
         elif(data[:2].decode('utf-8') == 'CM'):
             print(tabelaServidores.items())
