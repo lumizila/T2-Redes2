@@ -7,6 +7,27 @@ from time import sleep
 from datetime import datetime, date
 from collections import OrderedDict
 
+ops = {
+  "+": (lambda a, b: a + b),
+  "-": (lambda a, b: a - b),
+  "*": (lambda a, b: a * b),
+  "/": (lambda a, b: a / b)
+}
+
+def eval(expression):
+  tokens = expression.split()
+  stack = []
+
+  for token in tokens:
+    if token in ops:
+      arg2 = stack.pop()
+      arg1 = stack.pop()
+      result = ops[token](arg1, arg2)
+      stack.append(result)
+    else:
+      stack.append(int(token))
+
+  return stack.pop()
 
 def send_hearbeat(sockhp):
 
@@ -105,6 +126,9 @@ def main():
             counter = (counter + 1)% (len(tabelaServidores)*4)
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
+                print(data[-2:].decode('utf-8'))
+                print(str(eval(data[-2:].decode('utf-8')))
+                exit(1)
                 print('sending acknowledgement to', address)
                 sock.sendto('ack'.encode(), address)
             else:
