@@ -123,8 +123,8 @@ def main():
             tabelaServidores = update_heartbeat(address[0], tabelaServidores)
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
-                print(data[-2:].decode('utf-8'))
-                print(str(eval(data[-2:].decode('utf-8'))))
+                print("test" + str(data[2:].decode('utf-8')))
+                # print(str(eval(data[-2:].decode('utf-8'))))
                 sys.exit()
                 print('sending acknowledgement to', address)
                 sock.sendto('ack'.encode(), address)
