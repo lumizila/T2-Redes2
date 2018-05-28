@@ -128,7 +128,7 @@ def main():
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print(data[-2:].decode('utf-8'))
                 print(str(eval(data[-2:].decode('utf-8')))
-                exit(1)
+                sys.exit(1)
                 print('sending acknowledgement to', address)
                 sock.sendto('ack'.encode(), address)
             else:
