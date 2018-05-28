@@ -26,7 +26,11 @@ def eval(expression):
       result = ops[token](arg1, arg2)
       stack.append(result)
     else:
-      stack.append(int(token))
+        try:
+            stack.append(int(token))
+        except:
+            return "ERROR should be int"
+
 
   return stack.pop()
 
