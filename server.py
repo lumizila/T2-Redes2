@@ -123,11 +123,12 @@ def main():
             tabelaServidores = update_heartbeat(address[0], tabelaServidores)
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
-                print("test" + str(data[2:].decode('utf-8')))
-                # print(str(eval(data[-2:].decode('utf-8'))))
-                sys.exit()
+                print("Expression: " + str(data[2:].decode('utf-8')))
+                result = eval(data[-2:].decode('utf-8')))
+                print("Result: " + str(eval(data[-2:].decode('utf-8'))))
                 print('sending acknowledgement to', address)
-                sock.sendto('ack'.encode(), address)
+                sock.sendto(str(eval(data[-2:].decode('utf-8'))).encode(), address)
+                sys.exit()
             else:
                 print("I am not the chosen one")
 
