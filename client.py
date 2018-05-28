@@ -33,13 +33,14 @@ while(message != "quit"):
             while True:
                 print('waiting to receive')
                 try:
-                    data, server = sock.recvfrom(16)
+                    data, server = sock.recvfrom(64)
                 except socket.timeout:
                     print('timed out, no more responses')
                     break
                 else:
                     print('received: ', data.decode(
                         'utf-8'), ' from: ', server)
+                    print("RESULT:\n"+message[2:]+" = "+data.decode('utf-8'))
                     break
         except:
             print("in except")
