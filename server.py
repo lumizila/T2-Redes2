@@ -24,7 +24,7 @@ def eval(expression):
       try:
           arg1 = stack.pop()
       except Exception as e:
-          return "ERROR: should be RPN"
+          return "ERROR: The math expression should be in RPN."
 
       result = ops[token](arg1, arg2)
       stack.append(result)
@@ -32,7 +32,7 @@ def eval(expression):
         try:
             stack.append(int(token))
         except:
-            return "ERROR: should be integer"
+            return "ERROR: The numbers should be integers"
 
 
   return stack.pop()
@@ -50,7 +50,7 @@ def send_hearbeat(sockhp):
             sent = sockhp.sendto(message.encode(), multicast_group1)
 
         except:
-            print("Could not send heartbeat")
+            print("ERROR: Could not send heartbeat.")
             pass
 
         sleep(10)
@@ -123,22 +123,24 @@ def main():
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
     # Receive/respond loop
     while True:
-        print('waiting to receive message')
+        print('Server '+socket.gethostbyname(socket.gethostname())+' says: Waiting to receive message')
         data, address = sock.recvfrom(1024)
-        print('Received message: ' + data.decode('utf-8'))
-        #print('received ' + str(len(data)) + ' bytes from ' + str(address))
+        print('Server '+socket.gethostbyname(socket.gethostname())+' says: Received message: ' + data.decode('utf-8')[2:] + ' from ' + str(address))
         if(data[:2].decode('utf-8') == 'SM'):
             tabelaServidores = update_heartbeat(address[0], tabelaServidores)
         elif(data[:2].decode('utf-8') == 'CM'):
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
-                print("Expression: " + str(data[2:].decode('utf-8')))
+                print("Server "+str(socket.gethostbyname(socket.gethostname()))+" received expression: " + str(data[2:].decode('utf-8')))
                 result = eval(data[2:].decode('utf-8'))
-                print("Result: " + str(result))
-                print('Sending Result to ', address)
+                print("Server "+socket.gethostbyname(socket.gethostname())+" got result: " + str(result))
+                print("Server "+str(socket.gethostbyname(socket.gethostname()))+" is sending result to "+ str(address))
                 sock.sendto(str(result).encode(), address)
             else:
-                print("I am not the chosen one")
-
+                print("Server "+socket.gethostbyname(socket.gethostname())+" says: I am not the chosen one")
+        else:
+            print("Message not recognized, answering with error message.")
+            sock.sendto(("ERROR: Message not recognized by the server.").encode(), address)
+	
     hb.join()
     print('closing Heartbeat')
     sockhp.close()

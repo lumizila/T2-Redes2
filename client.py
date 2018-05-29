@@ -18,32 +18,37 @@ sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 
 message = "start"
 while(message != "quit"):
+    print("-----------------------------//--------------------------------")
     print("Welcome to the calculator Client! Type 'quit' to quit the program.")
     print("To make a calculation, type a reverse polish math expression,\nfor example 5+3 becomes 5 3 +")
+    print("-----------------------------//--------------------------------") 
     message = input("Please write your expression(or quit): ")
     if(message != "quit"):
         message = "CM" + message
         print(message)
-        try:
-            # Send data to the multicast group
-            sent = sock.sendto(message.encode(), multicast_group)
-            print('sending: ', message)
+        if(message == ""):
+            print("ERROR: The message can not be empty.")
+        else:  
+            try:
+                # Send data to the multicast group
+                sent = sock.sendto(message.encode(), multicast_group)
+                print('Sending math expression: ', message)
 
-            # Look for responses from all recipients
-            while True:
-                print('waiting to receive')
-                try:
-                    data, server = sock.recvfrom(64)
-                except socket.timeout:
-                    print('timed out, no more responses')
-                    break
-                else:
-                    print('received: ', data.decode(
-                        'utf-8'), ' from: ', server)
-                    print("RESULT:\n"+message[2:]+" = "+data.decode('utf-8'))
-                    break
-        except:
-            print("in except")
-            pass
-print('closing socket')
+                # Look for responses from all recipients
+                while True:
+                    print('Waiting to receive answer')
+                    try:
+                        data, server = sock.recvfrom(64)
+                    except socket.timeout:
+                        print('ERROR: timed out, no more responses')
+                        break
+                    else:
+                        print('Received message: "', data.decode(
+                            'utf-8'), '" from: ', server)
+                        print("RESULT:\n"+message[2:]+" = "+data.decode('utf-8'))
+                        break
+            except:
+                print("Could not send message through socket")
+                pass
+print('Closing client socket')
 sock.close()
