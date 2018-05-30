@@ -87,7 +87,6 @@ def update_heartbeat(address, tabelaServidores):
         tabelaServidores = OrderedDict(
             sorted(tabelaServidores.items(), key=lambda x: x[0]))
     print("Calling election")
-    tabelaServidores = is_active(tabelaServidores)
     return tabelaServidores
 
 def main():
@@ -129,6 +128,7 @@ def main():
         if(data[:2].decode('utf-8') == 'SM'):
             tabelaServidores = update_heartbeat(address[0], tabelaServidores)
         elif(data[:2].decode('utf-8') == 'CM'):
+            tabelaServidores = is_active(tabelaServidores)
             if(socket.gethostbyname(socket.gethostname()) == list(tabelaServidores.items())[0][0]):
                 print("Server "+str(socket.gethostbyname(socket.gethostname()))+" received expression: " + str(data[2:].decode('utf-8')))
                 result = eval(data[2:].decode('utf-8'))
