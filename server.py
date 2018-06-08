@@ -91,6 +91,15 @@ def update_heartbeat(address, tabelaServidores):
     return tabelaServidores
 
 def main():
+    print("-------------");
+    print(eval("3 5 - *"));
+    print("-------------");
+    print(eval("3 * 5 -"));
+    print("-------------");
+    print(eval("3 -5 *"));
+    print("-------------");
+    print(eval("3 5 - 2 *"));
+
 
     # Create the datagram socket
     sockhp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
